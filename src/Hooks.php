@@ -17,10 +17,10 @@
  * @file
  */
 
-namespace MediaWiki\Extension\BoilerPlate;
+namespace MediaWiki\Extension\EditCounts;
 
 /**
- * Hooks for BoilerPlate extension
+ * Hooks for EditCounts extension
  */
 class Hooks {
 

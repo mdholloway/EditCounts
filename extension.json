@@ -1,59 +1,26 @@
 {
-	"name": "BoilerPlate",
-	"version": "0.0.0",
+	"name": "EditCounts",
+	"version": "0.1.0",
 	"author": [
-		"Your Name"
+		"Michael Holloway"
 	],
-	"url": "https://www.mediawiki.org/wiki/Extension:BoilerPlate",
-	"descriptionmsg": "boilerplate-desc",
+	"url": "https://www.mediawiki.org/wiki/Extension:EditCounts",
+	"descriptionmsg": "editcounts-desc",
 	"license-name": "GPL-2.0-or-later",
 	"type": "other",
 	"requires": {
 		"MediaWiki": ">= 1.29.0"
 	},
 	"AutoloadClasses": {
-		"MediaWiki\\Extension\\BoilerPlate\\Hooks": "src/Hooks.php",
-		"MediaWiki\\Extension\\BoilerPlate\\SpecialHelloWorld": "src/SpecialHelloWorld.php"
-	},
-	"ConfigRegistry": {
-		"boilerplate": "GlobalVarConfig::newInstance"
-	},
-	"config": {
-		"BoilerPlateEnableFoo": {
-			"value": true,
-			"description": "Whether or not the foo feature is enabled."
-		}
-	},
-	"ExtensionMessagesFiles": {
-		"BoilerPlateAlias": "BoilerPlate.i18n.alias.php"
+		"MediaWiki\\Extension\\EditCounts\\Hooks": "src/Hooks.php"
 	},
 	"Hooks": {
-		"NameOfHook": "MediaWiki\\Extension\\BoilerPlate\\Hooks::onNameOfHook"
+		"NameOfHook": "MediaWiki\\Extension\\EditCounts\\Hooks::onNameOfHook"
 	},
 	"MessagesDirs": {
-		"BoilerPlate": [
+		"EditCounts": [
 			"i18n"
 		]
-	},
-	"ResourceModules": {
-		"ext.boilerPlate.foo": {
-			"scripts": [
-				"ext.boilerPlate.js",
-				"ext.boilerPlate.foo.js"
-			],
-			"styles": [
-				"ext.boilerPlate.foo.css"
-			],
-			"messages": [],
-			"dependencies": []
-		}
-	},
-	"ResourceFileModulePaths": {
-		"localBasePath": "resources",
-		"remoteExtPath": "BoilerPlate/resources"
-	},
-	"SpecialPages": {
-		"HelloWorld": "MediaWiki\\Extension\\BoilerPlate\\SpecialHelloWorld"
 	},
 	"manifest_version": 2
 }
