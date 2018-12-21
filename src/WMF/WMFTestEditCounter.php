@@ -26,26 +26,24 @@ use MediaWiki\Extension\EditCounts\Counter;
  */
 class WMFTestEditCounter extends Counter {
 
-	const USER_PROP_COUNT_NAME = 'test_edits';
-	const USER_PROP_FEATURE_UNLOCKED_NAME = 'test_feature_unlocked';
+	const COUNT_PROP = 'test_edits';
+	const FEATURE_UNLOCKED_PROP = 'test_edits_feature_unlocked';
+	const FEATURE_UNLOCKED_COUNT = 5;
 
 	public function __construct() {
-		parent::__construct( self::USER_PROP_COUNT_NAME, 5, function ( $user ) {
-			$this->unlockCoolEditFeature( $user );
-		} );
+		parent::__construct(
+			self::COUNT_PROP,
+			self::FEATURE_UNLOCKED_PROP,
+			self::FEATURE_UNLOCKED_COUNT
+		);
 	}
 
 	public function onEditSuccess( $user ) {
-		$count = $this->increment( $user );
+		return $this->increment( $user );
 	}
 
 	public function onRevert( $user ) {
-		$this->reset( $user );
-	}
-
-	public function unlockCoolEditFeature( $user ) {
-		// TODO: Make new DB table (ecf_user, ecf_feature) for unlocked features and update there
-		// $user->setOption( self::USER_PROP_FEATURE_UNLOCKED_NAME, true );
+		return $this->reset( $user );
 	}
 
 }

@@ -26,19 +26,19 @@ abstract class Counter {
 	/** @var string */
 	private $name;
 
+	/** @var string */
+	private $achievementName;
+
 	/** @var int */
 	private $targetCount;
-
-	/** @var Function<User> */
-	private $onTargetReachedEvent;
 
 	/** @var Dao> */
 	private $dao;
 
-	public function __construct( $name, $targetCount, $onTargetReachedEvent ) {
+	public function __construct( $name, $achievementName, $targetCount ) {
 		$this->name = $name;
+		$this->achievementName = $achievementName;
 		$this->targetCount = $targetCount;
-		$this->onTargetReachedEvent = $onTargetReachedEvent;
 		$this->dao = new Dao();
 	}
 
@@ -87,7 +87,7 @@ abstract class Counter {
 		$this->dao->setCount( $user->getId(), $this->name, ++$count );
 
 		if ( $count >= $this->targetCount ) {
-			$this->onTargetReachedEvent( $user );
+			$this->unlockAchievement( $user );
 		}
 
 		return $count;
@@ -121,6 +121,14 @@ abstract class Counter {
 		}
 		$this->dao->setCount( $user->getId(), $this->name, 0 );
 		return 0;
+	}
+
+	public function isAchievementUnlocked( $user ) {
+		return $this->dao->getAchievementUnlocked( $user->getId(), $this->achievementName );
+	}
+
+	public function unlockAchievement( $user ) {
+		return $this->dao->setAchievementUnlocked( $user->getId(), $this->achievementName );
 	}
 
 	/**

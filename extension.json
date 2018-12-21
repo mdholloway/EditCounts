@@ -12,6 +12,7 @@
 		"MediaWiki": ">= 1.29.0"
 	},
 	"AutoloadClasses": {
+		"MediaWiki\\Extension\\EditCounts\\Api\\ApiEditCounts": "src/api/ApiEditCounts.php",
 		"MediaWiki\\Extension\\EditCounts\\Counter": "src/Counter.php",
 		"MediaWiki\\Extension\\EditCounts\\Dao": "src/Dao.php",
 		"MediaWiki\\Extension\\EditCounts\\Hooks": "src/Hooks.php",
@@ -19,6 +20,9 @@
 		"MediaWiki\\Extension\\EditCounts\\Utils": "src/Utils.php",
 		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFCounterConfig": "src/WMF/WMFCounterConfig.php",
 		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFTestEditCounter": "src/WMF/WMFTestEditCounter.php"
+	},
+	"APIModules": {
+		"editcounts": "MediaWiki\\Extension\\EditCounts\\Api\\ApiEditCounts"
 	},
 	"Hooks": {
 		"LoadExtensionSchemaUpdates": "MediaWiki\\Extension\\EditCounts\\Hooks::onLoadExtensionSchemaUpdates",
