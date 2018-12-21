@@ -53,13 +53,6 @@ abstract class Counter {
 	abstract public function onRevert( $user );
 
 	/**
-	 * @return string $name name of counter
-	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
 	 * Get count for User $user
 	 * @param User $user
 	 * @return int value of counter
