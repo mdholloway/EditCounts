@@ -19,20 +19,96 @@
 
 namespace MediaWiki\Extension\EditCounts;
 
+use DatabaseUpdater;
+use Revision;
+use User;
+use MediaWiki\Extension\EditCounts\WMF\WMFCounterConfig;
+
 /**
  * Hooks for EditCounts extension
  */
 class Hooks {
 
 	/**
-	 * Hook: NameOfHook
+	 * Handler for PageContentSaveComplete hook
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/PageContentSaveComplete
 	 *
-	 * @param string $arg1 First argument
-	 * @param bool $arg2 Second argument
-	 * @param bool $arg3 Third argument
+	 * @param WikiPage &$wikiPage modified WikiPage
+	 * @param User &$user User who edited
+	 * @param Content $content New article text
+	 * @param string $summary Edit summary
+	 * @param bool $minoredit Minor edit or not
+	 * @param bool $watchthis Watch this article?
+	 * @param string $sectionanchor Section that was edited
+	 * @param int &$flags Edit flags
+	 * @param Revision $revision Revision that was created
+	 * @param Status &$status
+	 * @param int $baseRevId
+	 * @param int $undidRevId
+	 *
+	 * @return bool true in all cases
 	 */
-	public static function onNameOfHook( $arg1, $arg2, $arg3 ) {
-		// Stub
+	public static function onPageContentSaveComplete(
+		&$wikiPage,
+		&$user,
+		$content,
+		$summary,
+		$minoredit,
+		$watchthis,
+		$sectionanchor,
+		&$flags,
+		$revision,
+		&$status,
+		$baseRevId,
+		$undidRevId = 0
+	) {
+		if ( !$revision ) {
+			return true;
+		}
+
+		// unless status is "good" (not only ok, also no warnings or errors), we
+		// probably shouldn't process it at all (e.g. null edits)
+		if ( !$status->isGood() ) {
+			return true;
+		}
+
+		if ( $user && $user->isLoggedIn() ) {
+			// TODO: Make the active counter config configurable
+			foreach ( WMFCounterConfig::getDefinedCounters() as $counter ) {
+				$counter->onEditSuccess( $user );
+			}
+		}
+
+		if ( !$undidRevId ) {
+			return true;
+		}
+
+		$undidRev = Revision::newFromId( $undidRevId );
+		if ( !$undidRev ) {
+			return;
+		}
+		$undidUserId = $undidRev->getUser();
+		if ( !$undidUserId ) {
+			return;
+		}
+		if ( $undidRev->getTitle()->equals( $wikiPage->getTitle() ) ) {
+			$undidUser = User::newFromId( $undidUserId );
+			foreach ( WMFCounterConfig::getDefinedCounters() as $counter ) {
+				$counter->onRevert( $undidUser );
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param DatabaseUpdater $updater
+	 * @return bool
+	 */
+	public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
+		$baseDir = dirname( __DIR__ );
+		$updater->addExtensionTable( 'edit_counts', "$baseDir/sql/editcounts.sql" );
+		return true;
 	}
 
 }

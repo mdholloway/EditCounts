@@ -7,15 +7,22 @@
 	"url": "https://www.mediawiki.org/wiki/Extension:EditCounts",
 	"descriptionmsg": "editcounts-desc",
 	"license-name": "GPL-2.0-or-later",
-	"type": "other",
+	"type": "hooks",
 	"requires": {
 		"MediaWiki": ">= 1.29.0"
 	},
 	"AutoloadClasses": {
-		"MediaWiki\\Extension\\EditCounts\\Hooks": "src/Hooks.php"
+		"MediaWiki\\Extension\\EditCounts\\Counter": "src/Counter.php",
+		"MediaWiki\\Extension\\EditCounts\\Dao": "src/Dao.php",
+		"MediaWiki\\Extension\\EditCounts\\Hooks": "src/Hooks.php",
+		"MediaWiki\\Extension\\EditCounts\\ICounterConfig": "src/ICounterConfig.php",
+		"MediaWiki\\Extension\\EditCounts\\Utils": "src/Utils.php",
+		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFCounterConfig": "src/WMF/WMFCounterConfig.php",
+		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFTestEditCounter": "src/WMF/WMFTestEditCounter.php"
 	},
 	"Hooks": {
-		"NameOfHook": "MediaWiki\\Extension\\EditCounts\\Hooks::onNameOfHook"
+		"LoadExtensionSchemaUpdates": "MediaWiki\\Extension\\EditCounts\\Hooks::onLoadExtensionSchemaUpdates",
+		"PageContentSaveComplete": "MediaWiki\\Extension\\EditCounts\\Hooks::onPageContentSaveComplete"
 	},
 	"MessagesDirs": {
 		"EditCounts": [
