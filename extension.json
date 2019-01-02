@@ -19,7 +19,8 @@
 		"MediaWiki\\Extension\\EditCounts\\ICounterConfig": "src/ICounterConfig.php",
 		"MediaWiki\\Extension\\EditCounts\\Utils": "src/Utils.php",
 		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFCounterConfig": "src/WMF/WMFCounterConfig.php",
-		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFTestEditCounter": "src/WMF/WMFTestEditCounter.php"
+		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFTestEditCounter": "src/WMF/WMFTestEditCounter.php",
+		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFTestAppEditCounter": "src/WMF/WMFTestAppEditCounter.php"
 	},
 	"APIModules": {
 		"editcounts": "MediaWiki\\Extension\\EditCounts\\Api\\ApiEditCounts"

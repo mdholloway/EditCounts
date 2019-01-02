@@ -118,4 +118,13 @@ class Dao {
 		);
 	}
 
+	public function getTagSummary( $revId ) {
+		return $this->dbr->selectField(
+			'tag_summary',
+			'ts_tags',
+			[ 'ts_rev_id' => $revId ],
+			__METHOD__
+		);
+	}
+
 }

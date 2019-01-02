@@ -73,9 +73,12 @@ class Hooks {
 		}
 
 		if ( $user && $user->isLoggedIn() ) {
+			// We need to check the underlying request headers to determine if this is an app edit
+			global $wgRequest;
+
 			// TODO: Make the active counter config configurable
 			foreach ( WMFCounterConfig::getDefinedCounters() as $counter ) {
-				$counter->onEditSuccess( $user );
+				$counter->onEditSuccess( $user, $wgRequest );
 			}
 		}
 
@@ -94,7 +97,7 @@ class Hooks {
 		if ( $undidRev->getTitle()->equals( $wikiPage->getTitle() ) ) {
 			$undidUser = User::newFromId( $undidUserId );
 			foreach ( WMFCounterConfig::getDefinedCounters() as $counter ) {
-				$counter->onRevert( $undidUser );
+				$counter->onRevert( $undidUser, $undidRevId );
 			}
 		}
 

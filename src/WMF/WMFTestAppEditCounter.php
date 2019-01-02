@@ -22,12 +22,12 @@ namespace MediaWiki\Extension\EditCounts\WMF;
 use MediaWiki\Extension\EditCounts\Counter;
 
 /**
- * A basic edit counter for development and testing.
+ * A counter of app edits for development and testing.
  */
-class WMFTestEditCounter extends Counter {
+class WMFTestAppEditCounter extends Counter {
 
-	const COUNT_PROP = 'test_edits';
-	const FEATURE_UNLOCKED_PROP = 'test_edits_feature_unlocked';
+	const COUNT_PROP = 'test_app_edits';
+	const FEATURE_UNLOCKED_PROP = 'test_app_edits_feature_unlocked';
 	const FEATURE_UNLOCKED_COUNT = 5;
 
 	public function __construct() {
@@ -39,11 +39,31 @@ class WMFTestEditCounter extends Counter {
 	}
 
 	public function onEditSuccess( $user, $request ) {
-		return $this->increment( $user );
+		if ( $this->isRequestFromApp( $request ) ) {
+			return $this->increment( $user );
+		}
 	}
 
 	public function onRevert( $user, $revId ) {
-		return $this->reset( $user );
+		if ( $this->isRevisionAppEdit( $revId ) ) {
+			return $this->reset( $user );
+		}
+	}
+
+	private function isRequestFromApp( $request ) {
+		$ua = $request->getHeader( 'User-agent' );
+		if ( $ua ) {
+			return strpos( $ua, 'WikipediaApp/' ) === 0;
+		}
+		return false;
+	}
+
+	private function isRevisionAppEdit( $revId ) {
+		$ts = $this->dao->getTagSummary( $revId );
+		if ( $ts ) {
+			return strpos( $ts, 'app edit' ) !== false;
+		}
+		return false;
 	}
 
 }

@@ -26,6 +26,7 @@ class WMFCounterConfig implements ICounterConfig {
 	public static function getDefinedCounters() {
 		return [
 			new WMFTestEditCounter(),
+			new WMFTestAppEditCounter()
 		];
 	}
 

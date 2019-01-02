@@ -23,6 +23,9 @@ use \Error;
 
 abstract class Counter {
 
+	/** @var Dao> */
+	protected $dao;
+
 	/** @var string */
 	private $name;
 
@@ -31,9 +34,6 @@ abstract class Counter {
 
 	/** @var int */
 	private $targetCount;
-
-	/** @var Dao> */
-	private $dao;
 
 	public function __construct( $name, $achievementName, $targetCount ) {
 		$this->name = $name;
@@ -44,13 +44,15 @@ abstract class Counter {
 
 	/**
 	 * @param User $user user who edited
+	 * @param Request $request the current request object
 	 */
-	abstract public function onEditSuccess( $user );
+	abstract public function onEditSuccess( $user, $request );
 
 	/**
 	 * @param User $user user who was reverted
+	 * @param boolean $revId reverted revision ID
 	 */
-	abstract public function onRevert( $user );
+	abstract public function onRevert( $user, $revId );
 
 	/**
 	 * Get count for User $user
@@ -68,13 +70,9 @@ abstract class Counter {
 	/**
 	 * Increment count for User $user
 	 * @param User $user
-	 * @param Function<User> $condition optional filtering condition
 	 * @return int incremented count
 	 */
-	public function increment( $user, $condition = null ) {
-		if ( $condition && !$condition( $user ) ) {
-			return -1;
-		}
+	public function increment( $user ) {
 		$count = (int)$this->getCount( $user );
 		$this->validate( $count, $this->name );
 		$this->dao->setCount( $user->getId(), $this->name, ++$count );
@@ -89,13 +87,9 @@ abstract class Counter {
 	/**
 	 * Decrement count for User $user
 	 * @param User $user
-	 * @param Function<User> $condition optional filtering condition
 	 * @return int decremented count
 	 */
-	public function decrement( $user, $condition = null ) {
-		if ( $condition && !$condition( $user ) ) {
-			return -1;
-		}
+	public function decrement( $user ) {
 		$count = (int)$this->getCount( $user );
 		$this->validate( $count, $this->name );
 		$this->dao->setCount( $user->getId(), $this->name, --$count );
@@ -105,13 +99,9 @@ abstract class Counter {
 	/**
 	 * Reset count for User $user
 	 * @param User $user 
-	 * @param Function<User> $condition optional filtering condition
 	 * @return int new count (0)
 	 */
-	public function reset( $user, $condition = null ) {
-		if ( $condition && !$condition( $user ) ) {
-			return -1;
-		}
+	public function reset( $user ) {
 		$this->dao->setCount( $user->getId(), $this->name, 0 );
 		return 0;
 	}
