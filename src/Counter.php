@@ -79,7 +79,7 @@ abstract class Counter {
 		$this->validate( $count, $this->name );
 		$this->dao->setCount( $user->getId(), $this->name, ++$count );
 
-		if ( $count >= $this->targetCount ) {
+		if ( $count >= $this->targetCount && !$this->isAchievementUnlocked( $user ) ) {
 			$this->unlockAchievement( $user );
 		}
 
