@@ -35,6 +35,11 @@ class Dao {
 		$this->dbr = Utils::getDB( DB_REPLICA, $services );
 	}
 
+	/**
+	 * Get all edit counts for the user.
+	 * @param int $userId user ID
+	 * @return ResultWrapper
+	 */
 	public function getCountsForUser( $userId ) {
 		return $this->dbr->select(
 			'edit_counts',
@@ -44,6 +49,11 @@ class Dao {
 		);
 	}
 
+	/**
+	 * Get all unlocked achievements for the user.
+	 * @param int $userId user ID
+	 * @return Array<string> list of unlocked achievement keys
+	 */
 	public function getAchievementsForUser( $userId ) {
 		return $this->dbr->selectFieldValues(
 			'edit_counts_achievements',
@@ -53,6 +63,12 @@ class Dao {
 		);
 	}
 
+	/**
+	 * Get a specific edit count for the user.
+	 * @param int $userId user ID
+	 * @param string $property edit count key
+	 * @return int edit count for the specified key
+	 */
 	public function getCount( $userId, $property ) {
 		return $this->dbr->selectField(
 			'edit_counts',
@@ -65,6 +81,13 @@ class Dao {
 		);
 	}
 
+	/**
+	 * Set the count for a given edit count key.
+	 * @param int $userId user ID
+	 * @param string $property edit count key
+	 * @param int $value new value
+	 * @return bool true if operation completed successfully
+	 */
 	public function setCount( $userId, $property, $value ) {
 		return $this->dbw->upsert(
 			'edit_counts',
@@ -83,6 +106,12 @@ class Dao {
 		);
 	}
 
+	/**
+	 * Get whether the specified achievement has been unlocked.
+	 * @param int $userId user ID
+	 * @param string $property achievement key
+	 * @return bool whether the achievement is unlocked
+	 */
 	public function getAchievementUnlocked( $userId, $property ) {
 		return $this->dbr->selectRowCount(
 			'edit_counts_achievements',
@@ -95,6 +124,12 @@ class Dao {
 		) ? true : false;
 	}
 
+	/**
+	 * Add a row to edit_counts_achievements to mark the achievement unlocked
+	 * @param int $userId user ID
+	 * @param string $property achievement key
+	 * @return bool true if the operation completed successfully
+	 */
 	public function setAchievementUnlocked( $userId, $property ) {
 		return $this->dbw->insert(
 			'edit_counts_achievements',
@@ -106,7 +141,13 @@ class Dao {
 		);
 	}
 
-	// N.B. I don't think we should actually use this.
+	/**
+	 * Delete an unlocked achievement.
+	 * N.B. I don't think we should actually use this.
+	 * @param int $userId user ID
+	 * @param string $property achievement key
+	 * @return bool true if the operation completed successfully
+	 */
 	public function deleteAchievementUnlocked( $userId, $property ) {
 		return $this->dbw->delete(
 			'edit_counts_achievements',
@@ -118,6 +159,15 @@ class Dao {
 		);
 	}
 
+	/**
+	 * Get the tag summary for the specified revision.
+	 * This returns a list of tag names as stored in the DB, therefore
+	 * we can simply search for a substring such as 'app edit' without
+	 * needing to worry about i18n.
+	 * @param int $revId revision ID
+	 * @return string tag summary, provided as a comma-separated list
+	 * 	e.g., "mobile edit,mobile app edit"
+	 */
 	public function getTagSummary( $revId ) {
 		return $this->dbr->selectField(
 			'tag_summary',

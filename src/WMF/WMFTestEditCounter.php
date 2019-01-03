@@ -38,10 +38,16 @@ class WMFTestEditCounter extends Counter {
 		);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function onEditSuccess( $user, $request ) {
 		return $this->increment( $user );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function onRevert( $user, $revId ) {
 		return $this->reset( $user );
 	}

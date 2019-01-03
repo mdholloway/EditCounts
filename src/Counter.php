@@ -35,6 +35,11 @@ abstract class Counter {
 	/** @var int */
 	private $targetCount;
 
+	/**
+	 * @param string $name edit count tag
+	 * @param string $achievementName achievement tag
+	 * @param int $targetCount target count to unlock the associated achievement
+	 */
 	public function __construct( $name, $achievementName, $targetCount ) {
 		$this->name = $name;
 		$this->achievementName = $achievementName;
@@ -43,14 +48,19 @@ abstract class Counter {
 	}
 
 	/**
+	 * Specifies the action to take when a successful edit is made.
+	 * E.g., increment a counter if the edit is an in-app Wikidata description edit.
 	 * @param User $user user who edited
 	 * @param Request $request the current request object
 	 */
 	abstract public function onEditSuccess( $user, $request );
 
 	/**
+	 * Specifies the action to take when a revert is performed.
+	 * E.g., decrement or reset an editor's counter if the reverted edit is an in-app Wikidata
+	 *  description edit.
 	 * @param User $user user who was reverted
-	 * @param boolean $revId reverted revision ID
+	 * @param bool $revId reverted revision ID
 	 */
 	abstract public function onRevert( $user, $revId );
 
@@ -98,7 +108,7 @@ abstract class Counter {
 
 	/**
 	 * Reset count for User $user
-	 * @param User $user 
+	 * @param User $user
 	 * @return int new count (0)
 	 */
 	public function reset( $user ) {
@@ -106,10 +116,20 @@ abstract class Counter {
 		return 0;
 	}
 
+	/**
+	 * Get whether the achievement is unlocked for $user
+	 * @param User $user
+	 * @return bool whether the achievement is unlocked
+	 */
 	public function isAchievementUnlocked( $user ) {
 		return $this->dao->getAchievementUnlocked( $user->getId(), $this->achievementName );
 	}
 
+	/**
+	 * Set the achievement unlocked for $user
+	 * @param User $user
+	 * @return bool true if the operation completed successfully
+	 */
 	public function unlockAchievement( $user ) {
 		return $this->dao->setAchievementUnlocked( $user->getId(), $this->achievementName );
 	}

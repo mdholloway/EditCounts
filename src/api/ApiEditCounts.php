@@ -39,24 +39,25 @@ class ApiEditCounts extends ApiBase {
 
 		$dao = new Dao();
 		$userId = $this->getUser()->getId();
-		$counts = $this->resultFromWrapper( $dao->getCountsForUser( $userId ), 'ec_property', 'ec_value' );
+		$counts = $this->resultFromWrapper( $dao->getCountsForUser( $userId ), 'ec_property',
+			'ec_value' );
 		$achievements = $dao->getAchievementsForUser( $userId );
-	
+
 		$this->getResult()->addValue( null, 'editcounts', [
 			'counts' => $counts,
 			'achievements' => $achievements
-		]);
+		] );
 	}
 
 	/**
-	 * // TODO: Add params if we need/want finer-grained queries
+	 * TODO: Add params if we need/want finer-grained queries
 	 * @inheritDoc
 	 * @return array
 	 */
 	protected function getAllowedParams() {
 		return [
 			// 'prop' => [
-			// 	self::PARAM_TYPE => 'string'
+			// self::PARAM_TYPE => 'string'
 			// ],
 		];
 	}
@@ -69,7 +70,7 @@ class ApiEditCounts extends ApiBase {
 		return true;
 	}
 
-	private function resultFromWrapper( ResultWrapper $wrapper, string $keyName, string $valName ) {
+	private function resultFromWrapper( ResultWrapper $wrapper, $keyName, $valName ) {
 		$result = [];
 		foreach ( $wrapper as $row ) {
 			$result[$row->$keyName] = $row->$valName;

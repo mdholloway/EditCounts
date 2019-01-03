@@ -21,6 +21,11 @@ namespace MediaWiki\Extension\EditCounts;
 
 interface ICounterConfig {
 
-	static function getDefinedCounters();
+	/**
+	 * Get the active counters.
+	 * TODO: Move to extension config and make this go away
+	 * @return Array<Counter> active counters
+	 */
+	public static function getDefinedCounters();
 
 }

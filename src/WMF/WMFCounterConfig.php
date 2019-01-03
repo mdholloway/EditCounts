@@ -23,6 +23,9 @@ use MediaWiki\Extension\EditCounts\ICounterConfig;
 
 class WMFCounterConfig implements ICounterConfig {
 
+	/**
+	 * @inheritDoc
+	 */
 	public static function getDefinedCounters() {
 		return [
 			new WMFTestEditCounter(),

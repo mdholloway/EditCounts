@@ -111,7 +111,8 @@ class Hooks {
 	public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
 		$baseDir = dirname( __DIR__ );
 		$updater->addExtensionTable( 'edit_counts', "$baseDir/sql/editcounts.sql" );
-		$updater->addExtensionTable( 'edit_counts_achievements', "$baseDir/sql/editcountsachievements.sql" );
+		$updater->addExtensionTable( 'edit_counts_achievements',
+			"$baseDir/sql/editcountsachievements.sql" );
 		return true;
 	}
 
