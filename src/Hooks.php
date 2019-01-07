@@ -22,6 +22,7 @@ namespace MediaWiki\Extension\EditCounts;
 use DatabaseUpdater;
 use Revision;
 use User;
+use WikiPage;
 use MediaWiki\Extension\EditCounts\WMF\WMFCounterConfig;
 
 /**
@@ -101,6 +102,31 @@ class Hooks {
 			}
 		}
 
+		return true;
+	}
+
+	/**
+	 * Handler for ArticleRollbackComplete hook.
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleRollbackComplete
+	 *
+	 * @param WikiPage $wikiPage The article that was edited
+	 * @param User $agent The user who did the rollback
+	 * @param Revision $newRevision The revision the page was reverted back to
+	 * @param Revision $oldRevision The revision of the top edit that was reverted
+	 *
+	 * @return bool true in all cases
+	 */
+	public static function onRollbackComplete( WikiPage $wikiPage, $agent, $newRevision, $oldRevision ) {
+		$victimId = $oldRevision->getUser();
+		if (
+			 // Ignore anonymous users and null rollbacks
+			$victimId && !$oldRevision->getContent()->equals( $newRevision->getContent() )
+		) {
+			$victim = User::newFromId( $victimId );
+			foreach ( WMFCounterConfig::getDefinedCounters() as $counter ) {
+				$counter->onRevert( Utils::getCentralId( $victim ), $oldRevision->getId() );
+			}
+		}
 		return true;
 	}
 

@@ -26,6 +26,7 @@
 		"editcounts": "MediaWiki\\Extension\\EditCounts\\Api\\ApiEditCounts"
 	},
 	"Hooks": {
+		"ArticleRollbackComplete": "MediaWiki\\Extension\\EditCounts\\Hooks::onRollbackComplete",
 		"LoadExtensionSchemaUpdates": "MediaWiki\\Extension\\EditCounts\\Hooks::onLoadExtensionSchemaUpdates",
 		"PageContentSaveComplete": "MediaWiki\\Extension\\EditCounts\\Hooks::onPageContentSaveComplete"
 	},
