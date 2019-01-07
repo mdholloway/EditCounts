@@ -19,6 +19,9 @@
 
 namespace MediaWiki\Extension\EditCounts;
 
+use CentralIdLookup;
+use User;
+
 class Utils {
 	/**
 	 * Get a database connection.
@@ -30,6 +33,16 @@ class Utils {
 		$loadBalancerFactory = $services->getDBLoadBalancerFactory();
 		$loadBalancer = $loadBalancerFactory->getMainLB();
 		return $loadBalancer->getLazyConnectionRef( $db, [] );
+	}
+
+	/**
+	 * Get the central user ID for $user
+	 * @param User user local User
+	 * @return int central user ID
+	 */
+	public static function getCentralId( User $user ) {
+		return CentralIdLookup::factory()->centralIdFromLocalUser( $user,
+			CentralIdLookup::AUDIENCE_RAW );
 	}
 
 }

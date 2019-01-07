@@ -50,27 +50,27 @@ abstract class Counter {
 	/**
 	 * Specifies the action to take when a successful edit is made.
 	 * E.g., increment a counter if the edit is an in-app Wikidata description edit.
-	 * @param User $user user who edited
+	 * @param int $centralId central ID user who edited
 	 * @param Request $request the current request object
 	 */
-	abstract public function onEditSuccess( $user, $request );
+	abstract public function onEditSuccess( $centralId, $request );
 
 	/**
 	 * Specifies the action to take when a revert is performed.
 	 * E.g., decrement or reset an editor's counter if the reverted edit is an in-app Wikidata
 	 *  description edit.
-	 * @param User $user user who was reverted
+	 * @param int $centralId central ID of the user who was reverted
 	 * @param bool $revId reverted revision ID
 	 */
-	abstract public function onRevert( $user, $revId );
+	abstract public function onRevert( $centralId, $revId );
 
 	/**
-	 * Get count for User $user
-	 * @param User $user
+	 * Get count for user
+	 * @param int $centralId central ID of the user
 	 * @return int value of counter
 	 */
-	public function getCount( $user ) {
-		$count = $this->dao->getCount( $user->getId(), $this->name );
+	public function getCount( $centralId ) {
+		$count = $this->dao->getCount( $centralId, $this->name );
 		if ( $count ) {
 			return $count;
 		}
@@ -78,60 +78,60 @@ abstract class Counter {
 	}
 
 	/**
-	 * Increment count for User $user
-	 * @param User $user
+	 * Increment count for user
+	 * @param int $centralId central ID of the user
 	 * @return int incremented count
 	 */
-	public function increment( $user ) {
-		$count = (int)$this->getCount( $user );
+	public function increment( $centralId ) {
+		$count = (int)$this->getCount( $centralId );
 		$this->validate( $count, $this->name );
-		$this->dao->setCount( $user->getId(), $this->name, ++$count );
+		$this->dao->setCount( $centralId, $this->name, ++$count );
 
-		if ( $count >= $this->targetCount && !$this->isAchievementUnlocked( $user ) ) {
-			$this->unlockAchievement( $user );
+		if ( $count >= $this->targetCount && !$this->isAchievementUnlocked( $centralId ) ) {
+			$this->unlockAchievement( $centralId );
 		}
 
 		return $count;
 	}
 
 	/**
-	 * Decrement count for User $user
-	 * @param User $user
+	 * Decrement count for user
+	 * @param int $centralId central ID of the user
 	 * @return int decremented count
 	 */
-	public function decrement( $user ) {
-		$count = (int)$this->getCount( $user );
+	public function decrement( $centralId ) {
+		$count = (int)$this->getCount( $centralId );
 		$this->validate( $count, $this->name );
-		$this->dao->setCount( $user->getId(), $this->name, --$count );
+		$this->dao->setCount( $centralId, $this->name, --$count );
 		return $count;
 	}
 
 	/**
-	 * Reset count for User $user
-	 * @param User $user
+	 * Reset count for user
+	 * @param int $centralId central ID of the user
 	 * @return int new count (0)
 	 */
-	public function reset( $user ) {
-		$this->dao->setCount( $user->getId(), $this->name, 0 );
+	public function reset( $centralId ) {
+		$this->dao->setCount( $centralId, $this->name, 0 );
 		return 0;
 	}
 
 	/**
-	 * Get whether the achievement is unlocked for $user
-	 * @param User $user
+	 * Get whether the achievement is unlocked for a user
+	 * @param int $centralId central ID of the user
 	 * @return bool whether the achievement is unlocked
 	 */
-	public function isAchievementUnlocked( $user ) {
-		return $this->dao->getAchievementUnlocked( $user->getId(), $this->achievementName );
+	public function isAchievementUnlocked( $centralId ) {
+		return $this->dao->getAchievementUnlocked( $centralId, $this->achievementName );
 	}
 
 	/**
-	 * Set the achievement unlocked for $user
-	 * @param User $user
+	 * Set the achievement unlocked for a user
+	 * @param int $centralId central ID of the user
 	 * @return bool true if the operation completed successfully
 	 */
-	public function unlockAchievement( $user ) {
-		return $this->dao->setAchievementUnlocked( $user->getId(), $this->achievementName );
+	public function unlockAchievement( $centralId ) {
+		return $this->dao->setAchievementUnlocked( $centralId, $this->achievementName );
 	}
 
 	/**

@@ -41,15 +41,15 @@ class WMFTestEditCounter extends Counter {
 	/**
 	 * @inheritDoc
 	 */
-	public function onEditSuccess( $user, $request ) {
-		return $this->increment( $user );
+	public function onEditSuccess( $centralId, $request ) {
+		return $this->increment( $centralId );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onRevert( $user, $revId ) {
-		return $this->reset( $user );
+	public function onRevert( $centralId, $revId ) {
+		return $this->reset( $centralId );
 	}
 
 }

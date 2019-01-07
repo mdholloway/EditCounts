@@ -21,6 +21,7 @@ namespace MediaWiki\Extension\EditCounts\Api;
 
 use ApiBase;
 use MediaWiki\Extension\EditCounts\Dao;
+use MediaWiki\Extension\EditCounts\Utils;
 use Wikimedia\Rdbms\ResultWrapper;
 
 class ApiEditCounts extends ApiBase {
@@ -38,10 +39,10 @@ class ApiEditCounts extends ApiBase {
 		$this->checkUserRightsAny( 'viewmyprivateinfo' );
 
 		$dao = new Dao();
-		$userId = $this->getUser()->getId();
-		$counts = $this->resultFromWrapper( $dao->getCountsForUser( $userId ), 'ec_property',
+		$centralId = Utils::getCentralId( $this->getUser() );
+		$counts = $this->resultFromWrapper( $dao->getCountsForUser( $centralId ), 'ec_property',
 			'ec_value' );
-		$achievements = $dao->getAchievementsForUser( $userId );
+		$achievements = $dao->getAchievementsForUser( $centralId );
 
 		$this->getResult()->addValue( null, 'editcounts', [
 			'counts' => $counts,

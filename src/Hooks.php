@@ -78,7 +78,7 @@ class Hooks {
 
 			// TODO: Make the active counter config configurable
 			foreach ( WMFCounterConfig::getDefinedCounters() as $counter ) {
-				$counter->onEditSuccess( $user, $wgRequest );
+				$counter->onEditSuccess( Utils::getCentralId( $user ), $wgRequest );
 			}
 		}
 
@@ -97,7 +97,7 @@ class Hooks {
 		if ( $undidRev->getTitle()->equals( $wikiPage->getTitle() ) ) {
 			$undidUser = User::newFromId( $undidUserId );
 			foreach ( WMFCounterConfig::getDefinedCounters() as $counter ) {
-				$counter->onRevert( $undidUser, $undidRevId );
+				$counter->onRevert( Utils::getCentralId( $undidUser ), $undidRevId );
 			}
 		}
 

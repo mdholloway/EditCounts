@@ -41,18 +41,18 @@ class WMFTestAppEditCounter extends Counter {
 	/**
 	 * @inheritDoc
 	 */
-	public function onEditSuccess( $user, $request ) {
+	public function onEditSuccess( $centralId, $request ) {
 		if ( $this->isRequestFromApp( $request ) ) {
-			return $this->increment( $user );
+			return $this->increment( $centralId );
 		}
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onRevert( $user, $revId ) {
+	public function onRevert( $centralId, $revId ) {
 		if ( $this->isRevisionAppEdit( $revId ) ) {
-			return $this->reset( $user );
+			return $this->reset( $centralId );
 		}
 	}
 

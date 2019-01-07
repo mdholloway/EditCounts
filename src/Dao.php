@@ -37,14 +37,14 @@ class Dao {
 
 	/**
 	 * Get all edit counts for the user.
-	 * @param int $userId user ID
+	 * @param int $centralId user ID
 	 * @return ResultWrapper
 	 */
-	public function getCountsForUser( $userId ) {
+	public function getCountsForUser( $centralId ) {
 		return $this->dbr->select(
 			'edit_counts',
 			[ 'ec_property', 'ec_value' ],
-			[ 'ec_user' => $userId ],
+			[ 'ec_user' => $centralId ],
 			__METHOD__
 		);
 	}
@@ -54,11 +54,11 @@ class Dao {
 	 * @param int $userId user ID
 	 * @return Array<string> list of unlocked achievement keys
 	 */
-	public function getAchievementsForUser( $userId ) {
+	public function getAchievementsForUser( $centralId ) {
 		return $this->dbr->selectFieldValues(
 			'edit_counts_achievements',
 			'eca_property',
-			[ 'eca_user' => $userId ],
+			[ 'eca_user' => $centralId ],
 			__METHOD__
 		);
 	}
@@ -69,12 +69,12 @@ class Dao {
 	 * @param string $property edit count key
 	 * @return int edit count for the specified key
 	 */
-	public function getCount( $userId, $property ) {
+	public function getCount( $centralId, $property ) {
 		return $this->dbr->selectField(
 			'edit_counts',
 			'ec_value',
 			[
-				'ec_user' => $userId,
+				'ec_user' => $centralId,
 				'ec_property' => $property
 			],
 			__METHOD__
@@ -88,17 +88,17 @@ class Dao {
 	 * @param int $value new value
 	 * @return bool true if operation completed successfully
 	 */
-	public function setCount( $userId, $property, $value ) {
+	public function setCount( $centralId, $property, $value ) {
 		return $this->dbw->upsert(
 			'edit_counts',
 			[
-				'ec_user' => $userId,
+				'ec_user' => $centralId,
 				'ec_property' => $property,
 				'ec_value' => $value
 			],
 			[ 'ec_user', 'ec_property' ],
 			[
-				'ec_user' => $userId,
+				'ec_user' => $centralId,
 				'ec_property' => $property,
 				'ec_value' => $value
 			],
@@ -112,12 +112,12 @@ class Dao {
 	 * @param string $property achievement key
 	 * @return bool whether the achievement is unlocked
 	 */
-	public function getAchievementUnlocked( $userId, $property ) {
+	public function getAchievementUnlocked( $centralId, $property ) {
 		return $this->dbr->selectRowCount(
 			'edit_counts_achievements',
 			'*',
 			[
-				'eca_user' => $userId,
+				'eca_user' => $centralId,
 				'eca_property' => $property
 			],
 			__METHOD__
@@ -130,11 +130,11 @@ class Dao {
 	 * @param string $property achievement key
 	 * @return bool true if the operation completed successfully
 	 */
-	public function setAchievementUnlocked( $userId, $property ) {
+	public function setAchievementUnlocked( $centralId, $property ) {
 		return $this->dbw->insert(
 			'edit_counts_achievements',
 			[
-				'eca_user' => $userId,
+				'eca_user' => $centralId,
 				'eca_property' => $property
 			],
 			__METHOD__
@@ -148,11 +148,11 @@ class Dao {
 	 * @param string $property achievement key
 	 * @return bool true if the operation completed successfully
 	 */
-	public function deleteAchievementUnlocked( $userId, $property ) {
+	public function deleteAchievementUnlocked( $centralId, $property ) {
 		return $this->dbw->delete(
 			'edit_counts_achievements',
 			[
-				'eca_user' => $userId,
+				'eca_user' => $centralId,
 				'eca_property' => $property
 			],
 			__METHOD__
