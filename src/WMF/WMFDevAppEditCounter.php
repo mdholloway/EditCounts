@@ -26,18 +26,6 @@ use MediaWiki\Extension\EditCounts\Counter;
  */
 class WMFDevAppEditCounter extends Counter {
 
-	const COUNT_PROP = 'dev_app_edits';
-	const FEATURE_UNLOCKED_PROP = 'dev_app_edits_feature_unlocked';
-	const FEATURE_UNLOCKED_COUNT = 5;
-
-	public function __construct() {
-		parent::__construct(
-			self::COUNT_PROP,
-			self::FEATURE_UNLOCKED_PROP,
-			self::FEATURE_UNLOCKED_COUNT
-		);
-	}
-
 	/**
 	 * @inheritDoc
 	 */

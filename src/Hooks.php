@@ -77,8 +77,7 @@ class Hooks {
 			// We need to check the underlying request headers to determine if this is an app edit
 			global $wgRequest;
 
-			foreach ( Utils::getEnabledCounters() as $counterClass ) {
-				$counter = new $counterClass();
+			foreach ( Utils::getEnabledCounters() as $counter ) {
 				$counter->onEditSuccess( Utils::getCentralId( $user ), $wgRequest );
 			}
 		}
@@ -97,8 +96,7 @@ class Hooks {
 		}
 		if ( $undidRev->getTitle()->equals( $wikiPage->getTitle() ) ) {
 			$undidUser = User::newFromId( $undidUserId );
-			foreach ( Utils::getEnabledCounters() as $counterClass ) {
-				$counter = new $counterClass();
+			foreach ( Utils::getEnabledCounters() as $counter ) {
 				$counter->onRevert( Utils::getCentralId( $undidUser ), $undidRevId );
 			}
 		}
@@ -124,8 +122,7 @@ class Hooks {
 			$victimId && !$oldRevision->getContent()->equals( $newRevision->getContent() )
 		) {
 			$victim = User::newFromId( $victimId );
-			foreach ( Utils::getEnabledCounters() as $counterClass ) {
-				$counter = new $counterClass();
+			foreach ( Utils::getEnabledCounters() as $counter ) {
 				$counter->onRevert( Utils::getCentralId( $victim ), $oldRevision->getId() );
 			}
 		}

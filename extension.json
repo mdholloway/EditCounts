@@ -17,10 +17,20 @@
 	"config": {
 		"EditCountsEnabledCounters": {
 			"value": [
-				"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevEditCounter",
-				"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevAppEditCounter"
+				{
+					"class": "MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevEditCounter",
+					"count_prop": "dev_edits",
+					"feature_unlocked_prop": "dev_edits_feature_unlocked",
+					"feature_unlocked_count": 5
+				},
+				{
+					"class": "MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevAppEditCounter",
+					"count_prop": "dev_app_edits",
+					"feature_unlocked_prop": "dev_app_edits_feature_unlocked",
+					"feature_unlocked_count": 5
+				}
 			],
-			"description": "Counter classes to enable"
+			"description": "Counter classes to enable, with associated configuation. Fields:\n* class: the fully qualified class name\n* count_prop: the count property name associated with the counter, for storing in the DB and surfacing in the MediaWiki API\n* feature_unlocked_prop: the feature-unlocked property name associated with the counter, for storing in the DB and surfacing in the MediaWiki API\n* feature_unlocked_count: the number of edits required before unlocking the feature associated with feature_unlocked_prop"
 		}
 	},
 	"AutoloadClasses": {

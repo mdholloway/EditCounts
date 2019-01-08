@@ -47,8 +47,13 @@ class Utils {
 	}
 
 	public static function getEnabledCounters() {
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'EditCounts' );
-		return $config->get( 'EditCountsEnabledCounters' );
+		$extConfig = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'EditCounts' );
+		return array_map( function ( $conf ) {
+			return new $conf['class'](
+				$conf['count_prop'],
+				$conf['feature_unlocked_prop'],
+				$conf['feature_unlocked_count'] );
+		}, $extConfig->get( 'EditCountsEnabledCounters' ) );
 	}
 
 }
