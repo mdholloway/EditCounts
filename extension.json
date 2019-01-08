@@ -11,16 +11,26 @@
 	"requires": {
 		"MediaWiki": ">= 1.29.0"
 	},
+	"ConfigRegistry": {
+		"EditCounts": "GlobalVarConfig::newInstance"
+	},
+	"config": {
+		"EditCountsEnabledCounters": {
+			"value": [
+				"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevEditCounter",
+				"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevAppEditCounter"
+			],
+			"description": "Counter classes to enable"
+		}
+	},
 	"AutoloadClasses": {
 		"MediaWiki\\Extension\\EditCounts\\Api\\ApiEditCounts": "src/api/ApiEditCounts.php",
 		"MediaWiki\\Extension\\EditCounts\\Counter": "src/Counter.php",
 		"MediaWiki\\Extension\\EditCounts\\Dao": "src/Dao.php",
 		"MediaWiki\\Extension\\EditCounts\\Hooks": "src/Hooks.php",
-		"MediaWiki\\Extension\\EditCounts\\ICounterConfig": "src/ICounterConfig.php",
 		"MediaWiki\\Extension\\EditCounts\\Utils": "src/Utils.php",
-		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFCounterConfig": "src/WMF/WMFCounterConfig.php",
-		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFTestEditCounter": "src/WMF/WMFTestEditCounter.php",
-		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFTestAppEditCounter": "src/WMF/WMFTestAppEditCounter.php"
+		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevEditCounter": "src/WMF/WMFDevEditCounter.php",
+		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevAppEditCounter": "src/WMF/WMFDevAppEditCounter.php"
 	},
 	"APIModules": {
 		"editcounts": "MediaWiki\\Extension\\EditCounts\\Api\\ApiEditCounts"

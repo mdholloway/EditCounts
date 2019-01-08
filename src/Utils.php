@@ -20,6 +20,7 @@
 namespace MediaWiki\Extension\EditCounts;
 
 use CentralIdLookup;
+use MediaWiki\MediaWikiServices;
 use User;
 
 class Utils {
@@ -43,6 +44,11 @@ class Utils {
 	public static function getCentralId( User $user ) {
 		return CentralIdLookup::factory()->centralIdFromLocalUser( $user,
 			CentralIdLookup::AUDIENCE_RAW );
+	}
+
+	public static function getEnabledCounters() {
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'EditCounts' );
+		return $config->get( 'EditCountsEnabledCounters' );
 	}
 
 }

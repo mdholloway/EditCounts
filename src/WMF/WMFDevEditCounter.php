@@ -17,15 +17,39 @@
  * @file
  */
 
-namespace MediaWiki\Extension\EditCounts;
+namespace MediaWiki\Extension\EditCounts\WMF;
 
-interface ICounterConfig {
+use MediaWiki\Extension\EditCounts\Counter;
+
+/**
+ * A basic edit counter for development and testing.
+ */
+class WMFDevEditCounter extends Counter {
+
+	const COUNT_PROP = 'dev_edits';
+	const FEATURE_UNLOCKED_PROP = 'dev_edits_feature_unlocked';
+	const FEATURE_UNLOCKED_COUNT = 5;
+
+	public function __construct() {
+		parent::__construct(
+			self::COUNT_PROP,
+			self::FEATURE_UNLOCKED_PROP,
+			self::FEATURE_UNLOCKED_COUNT
+		);
+	}
 
 	/**
-	 * Get the active counters.
-	 * TODO: Move to extension config and make this go away
-	 * @return Array<Counter> active counters
+	 * @inheritDoc
 	 */
-	public static function getDefinedCounters();
+	public function onEditSuccess( $centralId, $request ) {
+		return $this->increment( $centralId );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function onRevert( $centralId, $revId ) {
+		return $this->reset( $centralId );
+	}
 
 }
