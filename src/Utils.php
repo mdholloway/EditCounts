@@ -24,6 +24,7 @@ use MediaWiki\MediaWikiServices;
 use User;
 
 class Utils {
+
 	/**
 	 * Get a database connection.
 	 * @param int $db Index of the connection to get, e.g. DB_MASTER or DB_REPLICA.
@@ -46,14 +47,23 @@ class Utils {
 			CentralIdLookup::AUDIENCE_RAW );
 	}
 
-	public static function getEnabledCounters() {
-		$extConfig = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'EditCounts' );
+	/**
+	 * Get the set of enabled counters defined in the extension configuation.
+	 * @param Array $counterConfig (for testing) counter definitions to use in place of those
+	 * 	in the extension configuration
+	 * @return Array<Counter> array containing the enabled counters
+	 */
+	public static function getEnabledCounters( $counterConfig = null ) {
+		if ( !$counterConfig ) {
+			$cf = MediaWikiServices::getInstance()->getConfigFactory();
+			$counterConfig = $cf->makeConfig( 'EditCounts' )->get( 'EditCountsEnabledCounters' );
+		}
 		return array_map( function ( $conf ) {
 			return new $conf['class'](
 				$conf['count_prop'],
 				$conf['feature_unlocked_prop'],
 				$conf['feature_unlocked_count'] );
-		}, $extConfig->get( 'EditCountsEnabledCounters' ) );
+		}, $counterConfig );
 	}
 
 }

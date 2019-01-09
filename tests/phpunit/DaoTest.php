@@ -17,7 +17,7 @@
  * @file
  */
 
-namespace MediaWiki\Extension\EditCounts\Tests;
+namespace MediaWiki\Extension\EditCounts\Test;
 
 use MediaWiki\Extension\EditCounts\Dao;
 use MediaWikiTestCase;

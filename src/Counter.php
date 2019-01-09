@@ -65,6 +65,27 @@ abstract class Counter {
 	abstract public function onRevert( $centralId, $revId );
 
 	/**
+	 * @return string $name
+	 */
+	public function getName() {
+		return $this->name;
+	}
+
+	/**
+	 * @return int $targetCount
+	 */
+	public function getTargetCount() {
+		return $this->targetCount;
+	}
+
+	/**
+	 * @return string $achievementName
+	 */
+	public function getAchievementName() {
+		return $this->achievementName;
+	}
+
+	/**
 	 * Get count for user
 	 * @param int $centralId central ID of the user
 	 * @return int value of counter

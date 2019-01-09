@@ -39,6 +39,9 @@
 		"MediaWiki\\Extension\\EditCounts\\Dao": "src/Dao.php",
 		"MediaWiki\\Extension\\EditCounts\\Hooks": "src/Hooks.php",
 		"MediaWiki\\Extension\\EditCounts\\Utils": "src/Utils.php",
+		"MediaWiki\\Extension\\EditCounts\\Test\\DecrementOnRevertTestCounter": "tests/phpunit/DecrementOnRevertTestCounter.php",
+		"MediaWiki\\Extension\\EditCounts\\Test\\ResetOnRevertTestCounter": "tests/phpunit/ResetOnRevertTestCounter.php",
+		"MediaWiki\\Extension\\EditCounts\\Test\\TestConstants": "tests/phpunit/TestConstants.php",
 		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevEditCounter": "src/WMF/WMFDevEditCounter.php",
 		"MediaWiki\\Extension\\EditCounts\\WMF\\WMFDevAppEditCounter": "src/WMF/WMFDevAppEditCounter.php"
 	},
