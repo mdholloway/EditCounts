@@ -28,7 +28,7 @@ use MediaWikiTestCase;
  */
 class DaoTest extends MediaWikiTestCase {
 
-	/** @var Dao $dao */
+	/** @var Dao */
 	private $dao;
 
 	public function setUp() {
